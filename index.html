@@ -37,6 +37,17 @@
         var routeData = [{"lat":50.657667,"lng":13.998167},{"lat":50.65835,"lng":14},{"lat":50.65865,"lng":14.002},{"lat":50.65865,"lng":14.002},{"lat":50.65865,"lng":14.002},{"lat":50.6598,"lng":14.011167},{"lat":50.6598,"lng":14.011167},{"lat":50.6598,"lng":14.011167},{"lat":50.6598,"lng":14.011167},{"lat":50.6623,"lng":14.021167},{"lat":50.663383,"lng":14.025167},{"lat":50.663667,"lng":14.026333},{"lat":50.663767,"lng":14.026667},{"lat":50.66435,"lng":14.028833},{"lat":50.6649,"lng":14.029333},{"lat":50.665583,"lng":14.0285},{"lat":50.665583,"lng":14.0285},{"lat":50.666883,"lng":14.029333},{"lat":50.666883,"lng":14.029333},{"lat":50.667433,"lng":14.029833},{"lat":50.667967,"lng":14.030333},{"lat":50.66825,"lng":14.030667},{"lat":50.668483,"lng":14.031},{"lat":50.66885,"lng":14.030833},{"lat":50.669167,"lng":14.030167},{"lat":50.669517,"lng":14.029667},{"lat":50.670217,"lng":14.028833},{"lat":50.670633,"lng":14.029167},{"lat":50.6712,"lng":14.029833},{"lat":50.6712,"lng":14.029833},{"lat":50.6725,"lng":14.027833},{"lat":50.6725,"lng":14.027833},{"lat":50.6725,"lng":14.027833},{"lat":50.6758,"lng":14.030667},{"lat":50.676083,"lng":14.0315},{"lat":50.676083,"lng":14.0315},{"lat":50.677217,"lng":14.034333},{"lat":50.67755,"lng":14.034833},{"lat":50.678017,"lng":14.0355},{"lat":50.678967,"lng":14.036667},{"lat":50.679433,"lng":14.037},{"lat":50.680217,"lng":14.036833},{"lat":50.6814,"lng":14.037333},{"lat":50.681967,"lng":14.037333},{"lat":50.682833,"lng":14.037667},{"lat":50.683633,"lng":14.038333},{"lat":50.684433,"lng":14.039333},{"lat":50.684433,"lng":14.039333},{"lat":50.684433,"lng":14.039333},{"lat":50.6883,"lng":14.046},{"lat":50.688917,"lng":14.046333},{"lat":50.68935,"lng":14.045333},{"lat":50.689317,"lng":14.044667},{"lat":50.689317,"lng":14.044833}];
           var allPoints = "";
           var str = '';
+          str+='<?xml version="1.0" encoding="UTF-8" standalone="no" ?>';
+          str+='<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="Oregon 400t" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">';
+          str+='<metadata>';
+          str+='<link href="http://www.eclubprague.com">';
+          str+='<text>eClubPrague</text>'
+          str+='</link>'
+          str+='<time>2016-10-17T22:58:43Z</time>'
+          str+='</metadata>'
+          str+='<trk>';
+          str+='<name>Route</name>';
+          str+='<trkseg>';
           for(var i = 0; i<routeData.length; i++) {
             str+='<trkpt lat="'+routeData[i].lat+'" lon="'+routeData[i].lng+'"></trkpt>\n';
             if(i != 0) {
@@ -47,9 +58,12 @@
             createMarker(routeData[i],i+"");
             allPoints+="point="+routeData[i].lat+","+routeData[i].lng;
           }
-          console.log(str);
-          console.log("https://iot.eclubprague.com/graphhopper-api/match/?"+allPoints+"&points_encoded=false&instructions=false&calc_points=true");
-        $.get("https://iot.eclubprague.com/graphhopper-api/match/?"+allPoints+"&points_encoded=false&instructions=false&calc_points=true", function(data) {
+
+          str+='</trkseg>';
+          str+='</trk>';
+          str+='</gpx>';
+
+        /*$.get("https://iot.eclubprague.com/graphhopper-api/match/?"+allPoints+"&points_encoded=false&instructions=false&calc_points=true", function(data) {
         	     var route = [];
 
                 data.paths[0].points.coordinates.forEach(function(point){
@@ -75,7 +89,40 @@
     
 
 
-        }, "json" );
+        }, "json" );*/
+        $.ajax({
+          type: "post",
+          url: "https://iot.eclubprague.com/graphhopper-api/match/?points_encoded=false",
+          accepts: "application/json",
+          data: str,
+          contentType: "application/gpx+xml",
+          success: function(data, status, object) {
+            var route = [];
+
+                data.paths[0].points.coordinates.forEach(function(point){
+                  var tmp = {};
+                  tmp.lat=point[1];
+                  tmp.lng=point[0];
+
+                  route.push(tmp);
+                });
+          
+            console.log("Path length",data.paths[0].distance/1000.0,"km");
+            console.log("Time needed",data.paths[0].time/3600000,"hours");
+
+                var flightPath = new google.maps.Polyline({
+                  path: route,
+                  geodesic: true,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2
+                });
+
+                flightPath.setMap(map);
+          },
+
+          dataType: "json"
+        });
 
         
 
@@ -84,7 +131,6 @@
       }
 
       function createMarker(place, index) {
-      console.log(place);
       var placeLoc = place;
       var marker = new google.maps.Marker({
         map: map,
