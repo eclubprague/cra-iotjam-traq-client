@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="Oregon 400t" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+  <metadata>
+    <link href="http://www.eclubprague.com">
+      <text>eClubPrague</text>
+    </link>
+    <time>2016-10-17T22:58:43Z</time>
+  </metadata>
+  <trk>
+    <name>Route</name>
+    <trkseg>
+      <trkpt lat="50.657667" lon="13.998167"></trkpt>
+      <trkpt lat="50.65835" lon="14"></trkpt>
+      <trkpt lat="50.65865" lon="14.002"></trkpt>
+      <trkpt lat="50.65865" lon="14.002"></trkpt>
+      <trkpt lat="50.65865" lon="14.002"></trkpt>
+      <trkpt lat="50.6598" lon="14.011167"></trkpt>
+      <trkpt lat="50.6598" lon="14.011167"></trkpt>
+      <trkpt lat="50.6598" lon="14.011167"></trkpt>
+      <trkpt lat="50.6598" lon="14.011167"></trkpt>
+      <trkpt lat="50.6623" lon="14.021167"></trkpt>
+      <trkpt lat="50.663383" lon="14.025167"></trkpt>
+      <trkpt lat="50.663667" lon="14.026333"></trkpt>
+      <trkpt lat="50.663767" lon="14.026667"></trkpt>
+      <trkpt lat="50.66435" lon="14.028833"></trkpt>
+      <trkpt lat="50.6649" lon="14.029333"></trkpt>
+      <trkpt lat="50.665583" lon="14.0285"></trkpt>
+      <trkpt lat="50.665583" lon="14.0285"></trkpt>
+      <trkpt lat="50.666883" lon="14.029333"></trkpt>
+      <trkpt lat="50.666883" lon="14.029333"></trkpt>
+      <trkpt lat="50.667433" lon="14.029833"></trkpt>
+      <trkpt lat="50.667967" lon="14.030333"></trkpt>
+      <trkpt lat="50.66825" lon="14.030667"></trkpt>
+      <trkpt lat="50.668483" lon="14.031"></trkpt>
+      <trkpt lat="50.66885" lon="14.030833"></trkpt>
+      <trkpt lat="50.669167" lon="14.030167"></trkpt>
+      <trkpt lat="50.669517" lon="14.029667"></trkpt>
+      <trkpt lat="50.670217" lon="14.028833"></trkpt>
+      <trkpt lat="50.670633" lon="14.029167"></trkpt>
+      <trkpt lat="50.6712" lon="14.029833"></trkpt>
+      <trkpt lat="50.6712" lon="14.029833"></trkpt>
+      <trkpt lat="50.6725" lon="14.027833"></trkpt>
+      <trkpt lat="50.6725" lon="14.027833"></trkpt>
+      <trkpt lat="50.6725" lon="14.027833"></trkpt>
+      <trkpt lat="50.6758" lon="14.030667"></trkpt>
+      <trkpt lat="50.676083" lon="14.0315"></trkpt>
+      <trkpt lat="50.676083" lon="14.0315"></trkpt>
+      <trkpt lat="50.677217" lon="14.034333"></trkpt>
+      <trkpt lat="50.67755" lon="14.034833"></trkpt>
+      <trkpt lat="50.678017" lon="14.0355"></trkpt>
+      <trkpt lat="50.678967" lon="14.036667"></trkpt>
+      <trkpt lat="50.679433" lon="14.037"></trkpt>
+      <trkpt lat="50.680217" lon="14.036833"></trkpt>
+      <trkpt lat="50.6814" lon="14.037333"></trkpt>
+      <trkpt lat="50.681967" lon="14.037333"></trkpt>
+      <trkpt lat="50.682833" lon="14.037667"></trkpt>
+      <trkpt lat="50.683633" lon="14.038333"></trkpt>
+      <trkpt lat="50.684433" lon="14.039333"></trkpt>
+      <trkpt lat="50.684433" lon="14.039333"></trkpt>
+      <trkpt lat="50.684433" lon="14.039333"></trkpt>
+      <trkpt lat="50.6883" lon="14.046"></trkpt>
+      <trkpt lat="50.688917" lon="14.046333"></trkpt>
+      <trkpt lat="50.68935" lon="14.045333"></trkpt>
+      <trkpt lat="50.689317" lon="14.044667"></trkpt>
+      <trkpt lat="50.689317" lon="14.044833"></trkpt>
+    </trkseg>
+  </trk>
+</gpx>
