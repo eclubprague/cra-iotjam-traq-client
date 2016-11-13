@@ -217,6 +217,10 @@
                     route.push(tmp);
                 });
 
+
+
+
+
                 matchTime(data.paths[0].points.coordinates, routeData);
                 distanceAndSpeed(data.paths[0].points.coordinates);
 
@@ -277,7 +281,7 @@
             place.lat = point[1];
             place.lng = point[0];
             createMarker1(place, point);
-            createMarker1(place, point);
+
 
 
         });
@@ -299,8 +303,9 @@
             });
 
             nearestPoint.time = originalPoint.time;
+
+            createMarker(originalPoint,originalPoint.time);
         });
-        //console.log(matchedPath);
     }
 
     function distance(lat1, lon1, lat2, lon2) {
@@ -316,6 +321,7 @@
     function createMarker(place, caption) {
         var marker = new google.maps.Marker({
             map: map,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
             position: place
         });
         google.maps.event.addListener(marker, 'click', function () {
