@@ -1,4 +1,4 @@
-# cro-iotjam-traq-client
+# TRAQ - client
 Aplikace TRAQ je projekt vyvinutý ve studentském akcelerátoru eClub Prague provozovaný Českým institutem informatiky robotiky a kybernetiky. Projekt vyvinul tým specializující se na oblast IoT. TRAQ se zaměřuje na chytré vyhodnocování pohybu a chování flotily firemních vozidel. 
 
 
