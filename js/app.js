@@ -165,6 +165,8 @@ function showInMap() {
 var map;
 var infowindow;
 var flightPaths = [];
+var heatMaps = [];
+
 var toggle = false;
 function initMap() {
 	console.log("INIT MAP?");
@@ -179,10 +181,43 @@ function initMap() {
     	if(toggle === false) {
     		toggle = true;
     		$('#toggleHeatMap').html("Turn Off Heatmap");
+			console.log("Update map");
+
+			heatMaps = [];
+			var mapPoints = [];
+			for(var key in selectedRoutes) {
+
+				matchData[key].points.forEach(function(point) {
+					mapPoints.push(new google.maps.LatLng(point[1],point[0]));
+				});
+
+				var heatmap = new google.maps.visualization.HeatmapLayer({
+					data: mapPoints,
+					map: map,
+					radius: 30,
+					opacity: 0.5,
+					dissipating: true
+				});
+
+
+				heatMaps.push(heatmap);
+				//map.center = mapPoints[0];
+			}
+
     	}else {
+
+			if(heatMaps !== undefined && heatMaps.length != 0) {
+				heatMaps.forEach(function(path) {
+					path.setMap(null);
+				});
+				heatMaps = [];
+			}
 
     		$('#toggleHeatMap').html("Turn On Heatmap");
     		toggle = false;
+
+
+
     	}
 
     	console.log("TLACITKO");
@@ -208,13 +243,22 @@ function pointInMap() {
 		    var flightPath = new google.maps.Polyline({
 		    path: mapPoints,
 		    geodesic: true,
-		    strokeColor: '#FF0000',
+		    strokeColor: "#FF0000",//getRandomColor();
 		    strokeOpacity: 1.0,
-		    strokeWeight: 2,
+		    strokeWeight: 3,
 		    map: map
 		    });
 		    flightPaths.push(flightPath);
 		    //map.center = mapPoints[0];
 	}
+}
+
+function getRandomColor() {
+	var letters = '0123456789ABCDE';
+	var color = '#';
+	for (var i = 0; i < 6; i++ ) {
+		color += letters[Math.floor(Math.random() * 15)];
+	}
+	return color;
 }
 
