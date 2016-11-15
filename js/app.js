@@ -190,19 +190,19 @@ function initMap() {
 				matchData[key].points.forEach(function(point) {
 					mapPoints.push(new google.maps.LatLng(point[1],point[0]));
 				});
-
-				var heatmap = new google.maps.visualization.HeatmapLayer({
-					data: mapPoints,
-					map: map,
-					radius: 30,
-					opacity: 0.5,
-					dissipating: true
-				});
-
-
-				heatMaps.push(heatmap);
-				//map.center = mapPoints[0];
+				
 			}
+
+			var heatmap = new google.maps.visualization.HeatmapLayer({
+				data: mapPoints,
+				map: map,
+				radius: 30,
+				opacity: 0.5,
+				dissipating: true
+			});
+
+
+			heatMaps.push(heatmap);
 
     	}else {
 
