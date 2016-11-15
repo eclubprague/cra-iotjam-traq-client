@@ -1,15 +1,17 @@
 //Cars loading
 var menuList;
 var menuListCar;
-
+var toggle = false;
 var selectedCar = undefined;
 var selectedRoutes = {};
 var matchData = undefined;
 var detailIndex = undefined;
+var checkboxesList = [];
 $( document ).ready(function() {
 	menuList = $('#menu-list');
 	getData(function(cars) {
 		cars.forEach(function (car) {
+			if(car.distance > 0) {
 			var li = $('<li/>').addClass(car.devEUI);
 			li.click(function(event) {
 				event.preventDefault();
@@ -17,10 +19,36 @@ $( document ).ready(function() {
 			});
 			li.appendTo(menuList);
 			li.html('<a id="car-'+car.devEUI+'"href="" title="Car :'+car.devEUI+'"><i class="fa fa-car"></i>'+car.devEUI.substr(13)+' ('+car.distance.toFixed(1)+' km)</a>')
+		}
 		});
 	}, "https://iot.eclubprague.com/traq-api/cars/");
 	initMap();
+
+	$('#toggleAllOn').click(function(event) {
+		checkAll(true);
+		showInMap();
+	});
+	$('#toggleAllOff').click(function(event) {
+		checkAll(false);
+		showInMap();
+	});
+
 });
+
+function checkAll(value) {
+	if(selectedCar != undefined) {
+		for(var i = 0; i < checkboxesList.length; i++) {
+			//checkbox.is(':checked')
+			var checkbox = checkboxesList[i];
+			checkbox.each(function(){ this.checked = value; });
+			if(value == true) {
+				selectedRoutes[i] = checkbox;
+			}else {
+				delete selectedRoutes[i];
+			}
+		}
+	}
+}
 
 function getData(callback, endpoint) {
 	$.ajax({
@@ -39,16 +67,16 @@ function getData(callback, endpoint) {
 function carClickCallback(object, car) {
 	selectedCar = car;
 	selectedRoutes = {};
+	checkboxesList = [];
+	showInMap();
 	detailIndex = undefined;
-	$('#carID').html(car.devEUI);
+	$('#carID').html(car.devEUI.substr(13));
 	$('#roadID').html(car.distance.toFixed(2)+" Km");
 	getData(function(data) {
 		matchData = data;
 		showInMenu(car, data);
 	}, "https://iot.eclubprague.com/traq-api/"+car.devEUI+"/matches");
 }
-
-
 
 function showInMenu(car, data) {
 	menuListCar = $('#menu-list-car');
@@ -64,10 +92,11 @@ function showInMenu(car, data) {
 
 		var nameCh = 'ch-'+car.devEUI+index+'';
 		var nameIndex = index;
-		var checkbox = $('<input/>', {type: "checkbox", "name": nameCh, style: 'display: inline; width:auto; margin: 0; margin-right: 3px;"', id: nameCh+"id"});
+		var checkbox = $('<input/>', {type: "checkbox", "name": nameCh, style: 'display: inline; width:auto; margin: 0"', id: nameCh+"id"});
 		checkbox.appendTo(a);
 		var span = $('<span/>', {text: route.startTime.substr(0, 10)+' ('+route.distance.toFixed(1)+' km)'});
 		span.appendTo(a);
+		checkboxesList.push(checkbox);
 
 		checkbox.click(function(event) {
 			if(event.target.id === nameCh+"id") {
@@ -123,8 +152,6 @@ function showInMap() {
 		}
 	}
 
-	console.log(selectedRoutes);
-
 	if(detailIndex !== undefined) {
 		$('#detailID').html("");
 		var detail = matchData[detailIndex];
@@ -156,9 +183,11 @@ function showInMap() {
 		divcol3.html('<h3><i class="fa fa-road"></i> '+detail.distance.toFixed(2)+' Km</h3><h3><i class="fa fa-calendar"></i> '+timeH.toFixed(0)+' h '+timeMin.toFixed(0)+' m. '+timeSeconds+' s.</h3>');
 		$('#detailID').append(divrow);
 		pointInMap();
+		updateHeatMap(!toggle);
 	}else {
 		$('#detailID').html("");
 		pointInMap();
+		updateHeatMap(!toggle);
 	}
 }
 
@@ -167,9 +196,8 @@ var infowindow;
 var flightPaths = [];
 var heatMaps = [];
 
-var toggle = false;
+
 function initMap() {
-	console.log("INIT MAP?");
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
         center: {lat: 49.92, lng: 15.27},
@@ -179,11 +207,25 @@ function initMap() {
 
     $('#toggleHeatMap').click(function(event) {
     	if(toggle === false) {
+    		updateHeatMap(toggle);
     		toggle = true;
     		$('#toggleHeatMap').html("Turn Off Heatmap");
-			console.log("Update map");
+    	}else {
+    		updateHeatMap(toggle);
+    		$('#toggleHeatMap').html("Turn On Heatmap");
+    		toggle = false;
+    	}
+    });
+}
 
-			heatMaps = [];
+function updateHeatMap(toggle) {
+	if(!toggle) {
+			if(heatMaps !== undefined && heatMaps.length != 0) {
+				heatMaps.forEach(function(path) {
+					path.setMap(null);
+				});
+				heatMaps = [];
+			}
 			var mapPoints = [];
 			for(var key in selectedRoutes) {
 
@@ -193,39 +235,29 @@ function initMap() {
 				
 			}
 
-			var heatmap = new google.maps.visualization.HeatmapLayer({
-				data: mapPoints,
-				map: map,
-				radius: 30,
-				opacity: 0.5,
-				dissipating: true
+		var heatmap = new google.maps.visualization.HeatmapLayer({
+			data: mapPoints,
+			map: map,
+			radius: 30,
+			opacity: 0.5,
+			dissipating: true
+		});
+
+
+		heatMaps.push(heatmap);
+	}else {
+		if(heatMaps !== undefined && heatMaps.length != 0) {
+			heatMaps.forEach(function(path) {
+				path.setMap(null);
 			});
+			heatMaps = [];
+		}
+	}
 
-
-			heatMaps.push(heatmap);
-
-    	}else {
-
-			if(heatMaps !== undefined && heatMaps.length != 0) {
-				heatMaps.forEach(function(path) {
-					path.setMap(null);
-				});
-				heatMaps = [];
-			}
-
-    		$('#toggleHeatMap').html("Turn On Heatmap");
-    		toggle = false;
-
-
-
-    	}
-
-    	console.log("TLACITKO");
-    });
 }
 
 function pointInMap() {
-	console.log("Update map");
+
 	if(flightPaths !== undefined && flightPaths.length != 0) {
 		flightPaths.forEach(function(path) {
 			path.setMap(null);
